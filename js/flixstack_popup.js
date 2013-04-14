@@ -5,7 +5,7 @@ $(document).ready(function() {
   show_loading();
 
   chrome.tabs.executeScript(null,{
-    file: "js/flixqueue.js"
+    file: "js/flixstack.js"
   });
 
   connect(function(data, textStatus) {
