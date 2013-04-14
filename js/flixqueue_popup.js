@@ -5,7 +5,7 @@ $(document).ready(function() {
   show_loading();
 
   chrome.tabs.executeScript(null,{
-    file: "flixqueue.js"
+    file: "js/flixqueue.js"
   });
 
   connect(function(data, textStatus) {
