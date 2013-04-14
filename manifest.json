@@ -1,0 +1,24 @@
+{
+  "manifest_version": 2,
+  "name": "FlixQueue",
+  "description": "Add Netflix streaming videos to a queue",
+  "version": "0.2",
+  "permissions": [
+    "tabs", "http://*/*", "http://flixqueue.local/"
+  ],
+  "browser_action": {
+    "default_icon": "icon-48.png",
+    "icons": {
+      "16": "icon-16.png",
+      "48": "icon-48.png",
+      "128": "icon-128.png"
+    },
+    "name": "Click to show Netflix Queue UI",
+    "default_popup": "flixqueue.html"
+  },
+  "content_scripts": [{
+    "js": [ "jquery.1.9.1.min.js" ],
+    "css": [ "flixqueue.css" ],
+    "matches": [ "http://*/*", "https://*/*"]
+  }]
+}

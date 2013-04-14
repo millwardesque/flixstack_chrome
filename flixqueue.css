@@ -1,0 +1,25 @@
+.flixqueue-wrapper {
+  float: left;
+  width: 100%;
+  clear: both;
+  margin-top: 4px;
+}
+
+.flixqueue-wrapper a {
+  border-radius: 8px;
+  border: 1px rgb(0, 56, 117) solid;
+  padding: 2px 8px;
+  margin-top: 4px;
+  background: rgb(0, 56, 117);
+  color: #ffffff;
+}
+
+.flixqueue-wrapper .add:before {
+  content: "+";
+  font-weight: bold;
+}
+
+.flixqueue-wrapper .remove:before {
+  content: "-";
+  font-weight: bold;
+}
