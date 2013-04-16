@@ -14,12 +14,7 @@
   color: #ffffff;
 }
 
-.flixstack-wrapper .add:before {
-  content: "+";
-  font-weight: bold;
-}
-
-.flixstack-wrapper .remove:before {
-  content: "-";
-  font-weight: bold;
+.flixstack-wrapper a.remove {
+  border-color: #B9090B;
+  background: #B9090B;
 }

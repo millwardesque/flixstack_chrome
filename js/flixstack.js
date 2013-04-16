@@ -92,7 +92,7 @@ function onclick_remove(e, video_id) {
     var img = $(image_element).attr('src');
 
     var new_element = make_link(true, title, video_id, img);
-    $(e.target).replaceWith(new_element);
+    $(e.target).parents('.flixstack-wrapper').replaceWith(new_element);
   }, 'json');
 
   e.preventDefault();
@@ -116,7 +116,7 @@ function onclick_add(e, title, video_id) {
     var img = $(image_element).attr('src');
 
     var new_element = make_link(false, title, video_id, img);
-    $(e.target).replaceWith(new_element);
+    $(e.target).parents('.flixstack-wrapper').replaceWith(new_element);
   }, 'json');
 
   e.preventDefault();
