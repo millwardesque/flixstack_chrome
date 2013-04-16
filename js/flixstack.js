@@ -1,6 +1,5 @@
 var queued_map = {};
 
-
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
     if (request.operation == "create links") {
@@ -14,34 +13,25 @@ chrome.runtime.onMessage.addListener(
 console.log("FlixStack Loaded");
 
 function create_links() {
-  var urls_to_queue = [];
+  var ids_to_queue = [];
   $('.agMovie a').each(function(index, element) {
-    urls_to_queue.push($(element).attr('href'));
+    var video_id = get_video_id_from_url($(element).attr('href'));
+    ids_to_queue.push(video_id);
   });
 
-  check_queued(urls_to_queue, function(data, textStatus) {
-    for (var key in data['urls']) {
-      var video_id = get_video_id_from_url(key);
-      if (video_id) {
-        queued_map[video_id] = data['urls'][key];
-      }
-      else {
-        console.log("Failed getting ID from " + key);
-      }
+  check_queued(ids_to_queue, function(data, textStatus) {
+    for (var key in data['ids']) {
+      queued_map[key] = data['ids'][key];
     }
 
     $('.agMovie').each(function(index, element) {
       var image_element = $('.boxShotImg', element);
       var title = $(image_element).attr('alt');
       var img = $(image_element).attr('src');
-      var href = $('a', element).attr('href');
-      var video_id = get_video_id_from_url(href);
+      var video_id = get_video_id_from_url($('a', element).attr('href'));
 
       if (video_id) {
-        $(element).append(make_link(!queued_map[video_id], title, href, img));
-      }
-      else {
-        console.log("Failed getting ID from " + href);
+        $(element).append(make_link(!queued_map[video_id], title, video_id, img));
       }
     });
   });
@@ -51,7 +41,14 @@ function get_video_id_from_url(url) {
   var video_id_pattern = /movieid=([0-9]+?)&/;
 
   var video_id = video_id_pattern.exec(url);
-  return (video_id != null) ? video_id[1] : null;
+
+  if (video_id == null) {
+    console.log("Failed getting ID from " + url);
+    return null;
+  }
+  else {
+    return video_id[1];
+  }
 }
 
 function remove_links() {
@@ -61,7 +58,7 @@ function remove_links() {
 /**
  * Creates a FlixStack link
  */
-function make_link(is_add_link, title, href, img) {
+function make_link(is_add_link, title, video_id, img) {
   var wrapper = $('<div class="flixstack-wrapper"></div>');
   var anchor_text = is_add_link ? "Add to FlixStack" : "Remove from FlixStack";
   var anchor_class = is_add_link ? "add" : "remove";
@@ -71,10 +68,10 @@ function make_link(is_add_link, title, href, img) {
   $(anchor).click(function(e) {
     $(e).html("Loading...");
     if (is_add_link) {
-      onclick_add(e, title, href);
+      onclick_add(e, title, video_id);
     }
     else {
-      onclick_remove(e, href);
+      onclick_remove(e, video_id);
     }
   });
 
@@ -82,10 +79,10 @@ function make_link(is_add_link, title, href, img) {
   return wrapper;
 }
 
-function onclick_remove(e, video_url) {
+function onclick_remove(e, video_id) {
   var url = 'http://flixqueue.local/service/netflix/flixstack/targeted_actions/remove_from_queue.json';
   var post_data = {
-    'url': video_url
+    'id': video_id
   };
   var jq_e = $(e.target).parents('.agMovie');
 
@@ -93,9 +90,8 @@ function onclick_remove(e, video_url) {
     var image_element = $('.boxShotImg', jq_e);
     var title = $(image_element).attr('alt');
     var img = $(image_element).attr('src');
-    var href = $('a', jq_e).attr('href')
 
-    var new_element = make_link(true, title, href, img);
+    var new_element = make_link(true, title, video_id, img);
     $(e.target).replaceWith(new_element);
   }, 'json');
 
@@ -104,11 +100,11 @@ function onclick_remove(e, video_url) {
   return false;
 }
 
-function onclick_add(e, title, href) {
+function onclick_add(e, title, video_id) {
   var url = 'http://flixqueue.local/service/netflix/node.json';
   var post_data = {
     'title': title,
-    'field_video_link[und][0][url]': href,
+    'field_video_id[und][0][value]': video_id,
     'type': 'netflix_video'
     // @TODO Add img link.
   };
@@ -118,9 +114,8 @@ function onclick_add(e, title, href) {
     var image_element = $('.boxShotImg', jq_e);
     var title = $(image_element).attr('alt');
     var img = $(image_element).attr('src');
-    var href = $('a', jq_e).attr('href')
 
-    var new_element = make_link(false, title, href, img);
+    var new_element = make_link(false, title, video_id, img);
     $(e.target).replaceWith(new_element);
   }, 'json');
 
@@ -129,10 +124,10 @@ function onclick_add(e, title, href) {
   return false;
 }
 
-function check_queued(video_urls, callback) {
-  var url = 'http://flixqueue.local/service/netflix/flixstack/targeted_actions/are_urls_queued.json';
+function check_queued(video_ids, callback) {
+  var url = 'http://flixqueue.local/service/netflix/flixstack/targeted_actions/are_ids_queued.json';
   var post_data = {
-    'urls': video_urls.join('||'),
+    'ids': video_ids.join('||'),
   };
 
   $.post(url, post_data, callback, 'json');
