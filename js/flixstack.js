@@ -68,7 +68,7 @@ function make_link(is_add_link, title, video_id, img) {
   $(anchor).click(function(e) {
     $(e).html("Loading...");
     if (is_add_link) {
-      onclick_add(e, title, video_id);
+      onclick_add(e, title, video_id, img);
     }
     else {
       onclick_remove(e, video_id);
@@ -89,9 +89,9 @@ function onclick_remove(e, video_id) {
   $.post(url, post_data, function(data, textStatus) {
     var image_element = $('.boxShotImg', jq_e);
     var title = $(image_element).attr('alt');
-    var img = $(image_element).attr('src');
+    var video_img = $(image_element).attr('src');
 
-    var new_element = make_link(true, title, video_id, img);
+    var new_element = make_link(true, title, video_id, video_img);
     $(e.target).parents('.flixstack-wrapper').replaceWith(new_element);
   }, 'json');
 
@@ -100,22 +100,22 @@ function onclick_remove(e, video_id) {
   return false;
 }
 
-function onclick_add(e, title, video_id) {
-  var url = 'http://flixqueue.local/service/netflix/node.json';
+function onclick_add(e, title, video_id, img) {
+  var url = 'http://flixqueue.local/service/netflix/flixstack/targeted_actions/add_video.json';
   var post_data = {
     'title': title,
-    'field_video_id[und][0][value]': video_id,
-    'type': 'netflix_video'
-    // @TODO Add img link.
+    'video_id': video_id,
+    'type': 'netflix_video',
+    'image_url': img
   };
   var jq_e = $(e.target).parents('.agMovie');
 
   $.post(url, post_data, function(data, textStatus) {
     var image_element = $('.boxShotImg', jq_e);
     var title = $(image_element).attr('alt');
-    var img = $(image_element).attr('src');
+    var video_img = $(image_element).attr('src');
 
-    var new_element = make_link(false, title, video_id, img);
+    var new_element = make_link(false, title, video_id, video_img);
     $(e.target).parents('.flixstack-wrapper').replaceWith(new_element);
   }, 'json');
 
