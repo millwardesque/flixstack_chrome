@@ -14,6 +14,10 @@ $(document).ready(function() {
 
     if (is_signed_in()) {
       create_links();
+
+      load_stack(function(data, textStatus) {
+        create_stack('.logged-in ol', data);
+      });
     }
   });
 
@@ -25,6 +29,7 @@ $(document).ready(function() {
       user = undefined;
       update_status();
       remove_links();
+      $('.logged-in ol').html('');
     });
     update_status();
   });
@@ -40,12 +45,30 @@ $(document).ready(function() {
       user = data;
       update_status();
       create_links();
+      load_stack(function(data, textStatus) {
+        create_stack('.logged-in ol', data);
+      });
     },
     function() {
       $('.messages').html('Login failed, please try again.');
     })
   });
 })
+
+function load_stack(callback) {
+  var url = 'http://flixqueue.local/service/netflix/video_queue_view.json';
+  var get_data = {};
+
+  $.get(url, get_data, callback, 'json');
+}
+
+function create_stack(target, data) {
+  for (var i in data) {
+      var stack_item = $('<li><a>' + data[i]["Video Image"] + "<span>" + data[i].node_title + '</span></a></li>');
+      $('a', stack_item).attr('href', "http://movies.netflix.com/WiPlayer?movieid=" + data[i]["Video ID"]).attr('target', '_blank');
+      $(target).append(stack_item);
+    }
+}
 
 function create_links() {
   chrome.tabs.getSelected(null, function(tab) {
