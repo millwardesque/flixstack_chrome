@@ -19,6 +19,6 @@
   "content_scripts": [{
     "js": [ "js/jquery.1.9.1.min.js", "js/flixstack.js" ],
     "css": [ "css/flixstack.css" ],
-    "matches": [ "http://*/*", "https://*/*"]
+    "matches": [ "http://movies.netflix.com/*", "https://movies.netflix.com/*" ]
   }]
 }
