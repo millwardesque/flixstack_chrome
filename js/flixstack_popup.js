@@ -4,10 +4,6 @@ $(document).ready(function() {
   // Initial page setup.
   show_loading();
 
-  chrome.tabs.executeScript(null,{
-    file: "js/flixstack.js"
-  });
-
   connect(function(data, textStatus) {
     user = data;
     update_status();

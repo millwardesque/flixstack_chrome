@@ -13,10 +13,13 @@ chrome.runtime.onMessage.addListener(
 console.log("FlixStack Loaded");
 
 function create_links() {
+  // Add the new links
   var ids_to_queue = [];
-  $('.agMovie a').each(function(index, element) {
+  $('.agMovie .playLink').each(function(index, element) {
     var video_id = get_video_id_from_url($(element).attr('href'));
-    ids_to_queue.push(video_id);
+    if (video_id) {
+      ids_to_queue.push(video_id);
+    }
   });
 
   check_queued(ids_to_queue, function(data, textStatus) {
@@ -25,13 +28,15 @@ function create_links() {
     }
 
     $('.agMovie').each(function(index, element) {
-      var image_element = $('.boxShotImg', element);
-      var title = $(image_element).attr('alt');
-      var img = $(image_element).attr('src');
-      var video_id = get_video_id_from_url($('a', element).attr('href'));
+      if (!$('.flixstack-wrapper', element).length) {
+        var image_element = $('.boxShotImg', element);
+        var title = $(image_element).attr('alt');
+        var img = $(image_element).attr('src');
+        var video_id = get_video_id_from_url($('a', element).attr('href'));
 
-      if (video_id) {
-        $(element).append(make_link(!queued_map[video_id], title, video_id, img));
+        if (video_id) {
+          $(element).append(make_link(!queued_map[video_id], title, video_id, img));
+        }
       }
     });
   });
