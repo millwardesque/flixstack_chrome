@@ -85,9 +85,9 @@ function make_link(is_add_link, title, video_id, img) {
 }
 
 function onclick_remove(e, video_id) {
-  var url = 'http://flixqueue.local/service/netflix/flixstack/targeted_actions/remove_from_queue.json';
+  var url = 'http://flixqueue.local/service/netflix/flixstack/targeted_actions/remove_from_stack.json';
   var post_data = {
-    'id': video_id
+    'video_id': video_id
   };
   var jq_e = $(e.target).parents('.agMovie');
 
@@ -106,7 +106,7 @@ function onclick_remove(e, video_id) {
 }
 
 function onclick_add(e, title, video_id, img) {
-  var url = 'http://flixqueue.local/service/netflix/flixstack/targeted_actions/add_video.json';
+  var url = 'http://flixqueue.local/service/netflix/flixstack/targeted_actions/add_to_stack.json';
   var post_data = {
     'title': title,
     'video_id': video_id,
@@ -130,7 +130,7 @@ function onclick_add(e, title, video_id, img) {
 }
 
 function check_queued(video_ids, callback) {
-  var url = 'http://flixqueue.local/service/netflix/flixstack/targeted_actions/are_ids_queued.json';
+  var url = 'http://flixqueue.local/service/netflix/flixstack/targeted_actions/are_in_stack.json';
   var post_data = {
     'ids': video_ids.join('||'),
   };
