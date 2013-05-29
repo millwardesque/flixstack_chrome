@@ -1,0 +1,147 @@
+body {
+  width: 300px;
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
+  font-weight: 300;
+  margin: 0;
+}
+
+h1 {
+  background: url(../images/icon-48.png) no-repeat;
+  padding-top: 6px;
+  padding-left: 56px;
+  height: 48px;
+}
+
+/**
+ * Header
+ */
+header {
+  background: #f5f5f5;
+  border-bottom: #d5d5d5 1px solid;
+  padding: 1.0em 0;
+}
+
+header .title {
+  margin: 0;
+  padding-left: 60px;
+}
+
+header a {
+  color: #000;
+  text-decoration: none;
+}
+
+header nav ul {
+  float:right;
+}
+header nav li {
+  list-style: none;
+  float: left;
+  margin-left:10px;
+}
+
+header .logout {
+  float: right;
+  font-weight:bold;
+  margin-top: -2.0em;
+  font-size: 0.86em;
+  text-decoration: underline;
+}
+
+/**
+ * Footer
+ */
+footer {
+  background: #777;
+  padding: 0.5em 0;
+  color: #fafafa;
+  border-top: #111 1px solid;
+  font-size: 0.76em;
+  text-align: center;
+}
+
+/**
+ * Content
+ */
+.content {
+  background: #f7f7f7;
+}
+
+.panel-container {
+  margin-bottom: 1.0em;
+}
+
+.panel-container nav {
+  margin: 0.5em 0 0 0;
+}
+
+.panel-container nav ul {
+  margin:0;
+  padding-left: 0;
+}
+
+.panel-container nav ul li {
+  display: inline-block;
+  margin-right:0.5em;
+}
+
+.messages {
+  border: 1px dotted #c99;
+  margin-top: 10px;
+  background: #fdd;
+  padding: 8px;
+  list-style: none;
+}
+
+/**
+ * Forms
+ */
+.panel-container .form-item {
+  padding: 1.2em 0;
+  border-bottom: 1px dotted #d7d7d7;
+}
+
+.panel-container .form-item label {
+  display:block;
+  margin-bottom:4px;
+  font-size: 1.2em;
+}
+
+.panel-container .form-item input {
+  display:block;
+  margin:0;
+  font-size: 1.2em;
+}
+
+
+.panel-container .submit {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.button,
+.panel-container .submit input {
+  display: block;
+  background: url(../images/button.png) no-repeat;
+  font-size: 1.2em;
+  width: 122px;
+  height:34px;
+  border: none;
+  font-weight: bold;
+  color: #fff;
+}
+
+.button {
+  text-decoration: none;
+  text-align: center;
+}
+
+.button:active,
+.panel-container .submit input:active {
+  background-image: url(../images/button-down.png);
+}
+
+
+.manage-queue.button {
+  font-size:0.86em;
+}

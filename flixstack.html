@@ -4,34 +4,52 @@
     <title>FlixStack</title>
     <script src="js/jquery.1.9.1.min.js"></script>
     <script src="js/flixstack_popup.js"></script>
-    <style>
-      body {
-        width: 300px;
-      }
-    </style>
+
+    <link rel="stylesheet" href="css/unsemantic-grid-responsive-tablet-no-ie7.css" />
+    <link rel="stylesheet" href="css/flixstack-popup.css" />
   </head>
   <body>
-    <h1>FlixStack</h1>
-    <div class="content">
-      <div class="messages"></div>
-      <h2 class="loading">Loading...</h2>
-      <div class="login">
-        <form>
-          <label for="username">Username</label>
-          <input type="text" id="username">
-          <label for="password">Password</label>
-          <input type="text" id="password">
-          <a href="#" id="submit">Log in</a>
+    <header class="grid-container grid-100">
+      <h1 class="grid-100 title"><a href="http://flixqueue.local" target="_blank">FlixStack</a></h1>
+      <a class="logout" href="#">Log out</a>
+    </header>
+    
+    <div class="content grid-container grid-100">
+      <ul class="messages grid-100"></ul>
+      <h2 class="loading grid-100">Loading...</h2>
+
+      <div class="login panel-container grid-100">
+        <form method="post" action="#" id="login-form">
+          <div class="form-item grid-100 username-wrapper">
+            <label for="username">Email</label>
+            <input type="text" id="username" size="30">
+          </div>
+
+          <div class="form-item grid-100 password-wrapper">
+            <label for="password">Password</label>
+            <input type="password" id="password" size="30">
+          </div>
+
+          <div class="form-item submit grid-100">
+            <input type="submit" id="login-submit" value="Log in" />
+          </div>
         </form>
       </div>
 
-      <div class="logged-in">
+      <div class="logged-in panel-container grid-100">
+        <nav>
+          <ul>
+            <li><a class="button manage-queue" href="http://flixqueue.local/video-queue/sort" target="_blank">Manage queue</a></li>
+          </ul>
+        </nav>
         <div class="flixstack-list">
           <ol></ol>
         </div>
-        <a class="logout" href="#">Log out</a>
-        <a class="manage-queue" href="http://flixqueue.local/video-queue/sort" target="_blank">Manage queue</a>
       </div>
     </div>
+
+    <footer class="grid-container">
+      <div>&copy;2013 Millwardesque Ideas</div>
+    </footer>
   </body>
 </html>
