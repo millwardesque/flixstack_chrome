@@ -1,18 +1,17 @@
 var user;
-var flixqueue_domain = 'http://flixqueue.local';
 
 $(document).ready(function() {
   // Initial page setup.
   show_loading();
 
-  connect(function(data, textStatus) {
+  flixstack_api.connect(function(data, textStatus) {
     user = data;
     update_status();
 
     if (is_signed_in()) {
       create_links();
 
-      load_stack(function(data, textStatus) {
+      flixstack_api.load_stack(function(data, textStatus) {
         create_stack('.logged-in ol', data);
       });
     }
@@ -22,7 +21,7 @@ $(document).ready(function() {
   $('.logout').click(function() {
     show_loading();
 
-    logout(function(data, textStatus) {
+    flixstack_api.logout(function(data, textStatus) {
       user = undefined;
       update_status();
       remove_links();
@@ -37,11 +36,11 @@ $(document).ready(function() {
     $('.login #password').val('');
 
     show_loading();
-    login(username, password, function(data, textStatus) {
+    flixstack_api.login(username, password, function(data, textStatus) {
       user = data;
       update_status();
       create_links();
-      load_stack(function(data, textStatus) {
+      flixstack_api.load_stack(function(data, textStatus) {
         create_stack('.logged-in ol', data);
       });
     },
@@ -55,13 +54,6 @@ $(document).ready(function() {
     return false;
   });
 })
-
-function load_stack(callback) {
-  var url = flixqueue_domain + '/service/netflix/video_queue_view.json';
-  var get_data = {};
-
-  $.get(url, get_data, callback, 'json');
-}
 
 function create_stack(target, data) {
   for (var i in data) {
@@ -85,30 +77,6 @@ function remove_links() {
       console.log("Links removed");
     });
   });
-}
-
-function connect(callback) {
-  var url = flixqueue_domain + '/service/netflix/system/connect.json';
-  var post_data = {};
-
-  $.post(url, post_data, callback, 'json');
-}
-
-function login(username, password, callback_success, callback_401) {
-  var url = flixqueue_domain + '/service/netflix/user/login.json';
-  var post_data = {
-    'username': username,
-    'password': password
-  };
-
-  $.post(url, post_data, callback_success, 'json').fail(callback_401);
-}
-
-function logout(callback) {
-  var url = flixqueue_domain + '/service/netflix/user/logout.json';
-  var post_data = {};
-
-  $.post(url, post_data, callback, 'json');
 }
 
 function is_signed_in() {
