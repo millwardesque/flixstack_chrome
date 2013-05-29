@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "FlixStack",
   "description": "Add Netflix streaming videos to the FlixStack website",
-  "version": "0.3",
+  "version": "0.4",
   "permissions": [
     "tabs", "http://*/*", "http://flixqueue.local/"
   ],
@@ -17,7 +17,7 @@
     "default_popup": "flixstack.html"
   },
   "content_scripts": [{
-    "js": [ "js/jquery.1.9.1.min.js", "js/flixstack.js" ],
+    "js": [ "js/jquery.1.9.1.min.js", "js/flixstack.api.js", "js/flixstack.js" ],
     "css": [ "css/flixstack.css" ],
     "matches": [ "http://movies.netflix.com/*", "https://movies.netflix.com/*" ]
   }]

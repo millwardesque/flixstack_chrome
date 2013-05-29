@@ -84,56 +84,56 @@ function make_link(is_add_link, title, video_id, img) {
   return wrapper;
 }
 
+/**
+ * Click handler that removes a video from the queue.
+ *
+ * @param e
+ *  The event that was fired.
+ * @param video_id
+ *  The ID of the video to remove.
+ */
 function onclick_remove(e, video_id) {
-  var url = 'http://flixqueue.local/service/netflix/flixstack/targeted_actions/remove_from_stack.json';
-  var post_data = {
-    'video_id': video_id
-  };
   var jq_e = $(e.target).parents('.agMovie');
 
-  $.post(url, post_data, function(data, textStatus) {
+  flixstack_api.remove_from_stack(video_id, function(data, textStatus) {
     var image_element = $('.boxShotImg', jq_e);
     var title = $(image_element).attr('alt');
     var video_img = $(image_element).attr('src');
 
     var new_element = make_link(true, title, video_id, video_img);
     $(e.target).parents('.flixstack-wrapper').replaceWith(new_element);
-  }, 'json');
+  }); 
 
   e.preventDefault();
   e.stopPropagation();
   return false;
 }
 
+/**
+ * Click handler that adds a video to the queue.
+ *
+ * @param e
+ *  The event that was fired.
+ * @param title
+ *  The title of the video.
+ * @param video_id
+ *  The ID of the video.
+ * @prarm image_url
+ *  The image URL of the video boxart.
+ */
 function onclick_add(e, title, video_id, img) {
-  var url = 'http://flixqueue.local/service/netflix/flixstack/targeted_actions/add_to_stack.json';
-  var post_data = {
-    'title': title,
-    'video_id': video_id,
-    'type': 'netflix_video',
-    'image_url': img
-  };
   var jq_e = $(e.target).parents('.agMovie');
 
-  $.post(url, post_data, function(data, textStatus) {
+  flixstack_api.add_to_stack(title, video_id, img, function(data, textStatus) {
     var image_element = $('.boxShotImg', jq_e);
     var title = $(image_element).attr('alt');
     var video_img = $(image_element).attr('src');
 
     var new_element = make_link(false, title, video_id, video_img);
     $(e.target).parents('.flixstack-wrapper').replaceWith(new_element);
-  }, 'json');
+  });
 
   e.preventDefault();
   e.stopPropagation();
   return false;
-}
-
-function check_queued(video_ids, callback) {
-  var url = 'http://flixqueue.local/service/netflix/flixstack/targeted_actions/are_in_stack.json';
-  var post_data = {
-    'ids': video_ids.join('||'),
-  };
-
-  $.post(url, post_data, callback, 'json');
 }
