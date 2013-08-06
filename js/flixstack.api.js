@@ -6,7 +6,27 @@
 
 var flixstack_api = {
   flixstack_domain: 'http://flixqueue.local', // Domain name of the FlixStack webservice.
+  csrf_token: '',
 
+  get_csrf_token: function(callback) {
+    var url = flixstack_api.flixstack_domain + '/service/netflix/user/token.json'
+    var post_data = {};
+
+    if (flixstack_api.csrf_token) {
+      callback();
+      return;
+    }
+
+    $.post(url, post_data, function(data, textStatus) {
+      $.ajaxPrefilter(function(options, originalOptions, jqXHR) {
+        var token = data.token;
+        if (token) {
+          return jqXHR.setRequestHeader('X-CSRF-Token', token);
+        }
+      });
+      callback();
+    }, 'json');
+  },
 
   /**
    * Establishes a connection to the webservice.
@@ -18,7 +38,9 @@ var flixstack_api = {
     var url = flixstack_api.flixstack_domain + '/service/netflix/system/connect.json';
     var post_data = {};
 
-    $.post(url, post_data, callback, 'json');
+    flixstack_api.get_csrf_token(function() {
+      $.post(url, post_data, callback, 'json');
+    });
   },
 
   /**
@@ -40,7 +62,9 @@ var flixstack_api = {
       'password': password
     };
 
-    $.post(url, post_data, callback_success, 'json').fail(callback_401);
+    flixstack_api.get_csrf_token(function() {
+      $.post(url, post_data, callback_success, 'json').fail(callback_401);
+    });
   },
 
   /**
@@ -53,7 +77,9 @@ var flixstack_api = {
     var url = flixstack_api.flixstack_domain + '/service/netflix/user/logout.json';
     var post_data = {};
 
-    $.post(url, post_data, callback, 'json');
+    flixstack_api.get_csrf_token(function() {
+      $.post(url, post_data, callback, 'json');
+    });
   },
 
   /**
@@ -66,7 +92,9 @@ var flixstack_api = {
     var url = flixstack_api.flixstack_domain + '/service/netflix/video_queue_view.json';
     var get_data = {};
 
-    $.get(url, get_data, callback, 'json');
+    flixstack_api.get_csrf_token(function() {
+      $.get(url, get_data, callback, 'json');
+    });
   },
 
   /**
@@ -83,7 +111,9 @@ var flixstack_api = {
       'video_id': video_id
     };
 
-    $.post(url, post_data, callback, 'json');
+    flixstack_api.get_csrf_token(function() {
+      $.post(url, post_data, callback, 'json');
+    });
   },
 
   /**
@@ -107,7 +137,9 @@ var flixstack_api = {
       'type': 'netflix_video',
     };
 
-    $.post(url, post_data, callback, 'json');
+    flixstack_api.get_csrf_token(function() {
+      $.post(url, post_data, callback, 'json');
+    });
   },
 
   /**
@@ -124,6 +156,8 @@ var flixstack_api = {
       'ids': video_ids.join('||'),
     };
 
-    $.post(url, post_data, callback, 'json');
+    flixstack_api.get_csrf_token(function() {
+      $.post(url, post_data, callback, 'json');
+    });
   },
 };
