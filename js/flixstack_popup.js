@@ -63,19 +63,40 @@ $(document).ready(function() {
 
 function create_stack(target, data) {
   for (var i in data) {
-    var is_odd = i % 2
-    var stack_item = $('<li class="' + (is_odd ? "odd" : "even") + ' clearfix"><a class="movie-entry mobile-grid-90 grid-parent">' + 
+    var is_odd = i % 2;
+    var stack_item = $('<li class="movie ' + (is_odd ? "odd" : "even") + ' clearfix" data-movieid="' + data[i]["Video ID"] + '"><a class="movie-entry mobile-grid-90 grid-parent">' + 
         '<div class="boxart mobile-grid-25">' + data[i]["Video Image"] + '</div>' +
         '<div class="movie-title mobile-grid-65">' + data[i].node_title + '</div></a>' + 
         '<div class="shelf-toggle mobile-grid-10"><a href="#"><img alt="Toggle for opening the shelf" src="images/arrow-closed.png" /></a></div>' +
         '<div class="shelf mobile-grid-100 grid-parent" style="display:none"><div class="content mobile-grid-100"><a class="mark-as-watched mobile-grid-50 grid-parent" href="#">Mark as watched</a><a class="remove mobile-grid-50" href="#">Remove</a></div></div>' +
         '</li>');
+
+    $('.remove', stack_item).click(function(e) {
+      var movie_id = $(this).parents('.movie').attr('data-movieid');
+      flixstack_api.remove_from_stack(movie_id, function() {
+        $(stack_item).remove();
+      });
+    });
+
     $('.movie-entry', stack_item).attr('href', "http://movies.netflix.com/WiPlayer?movieid=" + data[i]["Video ID"]).attr('target', '_blank');
     $('.shelf-toggle', stack_item).click(function(e) {
-      $(this).siblings('.shelf').slideToggle();
+      var shelf = $(this).siblings('.shelf');
+      var will_be_opened = ($(shelf).css('display') == "none");
+      if (will_be_opened) {
+        $('img', this).attr('src', "images/arrow-open.png");
+      }
+      else {
+        $('img', this).attr('src', "images/arrow-closed.png");
+      }
+      $(shelf).slideToggle('fast');
       e.stopPropagation();
       e.preventDefault();
     });
+    $(target).append(stack_item);
+  }
+
+  if (data.length == 0) {
+    var stack_item = $("<li><div class=\"no-movies mobile-grid-100\">You don't have any movies saved.<a href=\"http://www.netflix.com\" target=\"_blank\">Why not add some?</a></div></li>");
     $(target).append(stack_item);
   }
 }
