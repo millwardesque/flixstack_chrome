@@ -53,30 +53,51 @@ $(document).ready(function() {
     e.stopPropagation();
     return false;
   });
-})
+
+  $('.settings-toggle').click(function(e) {
+      $(this).siblings('.shelf').slideToggle();
+      e.stopPropagation();
+      e.preventDefault();
+    });
+});
 
 function create_stack(target, data) {
   for (var i in data) {
-      var stack_item = $('<li><a>' + data[i]["Video Image"] + "<span>" + data[i].node_title + '</span></a></li>');
-      $('a', stack_item).attr('href', "http://movies.netflix.com/WiPlayer?movieid=" + data[i]["Video ID"]).attr('target', '_blank');
-      $(target).append(stack_item);
-    }
+    var is_odd = i % 2
+    var stack_item = $('<li class="' + (is_odd ? "odd" : "even") + ' clearfix"><a class="movie-entry mobile-grid-90 grid-parent">' + 
+        '<div class="boxart mobile-grid-25">' + data[i]["Video Image"] + '</div>' +
+        '<div class="movie-title mobile-grid-65">' + data[i].node_title + '</div></a>' + 
+        '<div class="shelf-toggle mobile-grid-10"><a href="#"><img alt="Toggle for opening the shelf" src="images/arrow-closed.png" /></a></div>' +
+        '<div class="shelf mobile-grid-100 grid-parent" style="display:none"><div class="content mobile-grid-100"><a class="mark-as-watched mobile-grid-50 grid-parent" href="#">Mark as watched</a><a class="remove mobile-grid-50" href="#">Remove</a></div></div>' +
+        '</li>');
+    $('.movie-entry', stack_item).attr('href', "http://movies.netflix.com/WiPlayer?movieid=" + data[i]["Video ID"]).attr('target', '_blank');
+    $('.shelf-toggle', stack_item).click(function(e) {
+      $(this).siblings('.shelf').slideToggle();
+      e.stopPropagation();
+      e.preventDefault();
+    });
+    $(target).append(stack_item);
+  }
 }
 
 function create_links() {
-  chrome.tabs.getSelected(null, function(tab) {
-    chrome.tabs.sendMessage(tab.id, { operation: "create links" }, function(response) {
-      console.log("Links created");
+  if (chrome.tabs) {
+    chrome.tabs.getSelected(null, function(tab) {
+      chrome.tabs.sendMessage(tab.id, { operation: "create links" }, function(response) {
+        console.log("Links created");
+      });
     });
-  });
+  }
 }
 
 function remove_links() {
-  chrome.tabs.getSelected(null, function(tab) {
-    chrome.tabs.sendMessage(tab.id, { operation: "remove links" }, function(response) {
-      console.log("Links removed");
+  if (chrome.tabs) {
+    chrome.tabs.getSelected(null, function(tab) {
+      chrome.tabs.sendMessage(tab.id, { operation: "remove links" }, function(response) {
+        console.log("Links removed");
+      });
     });
-  });
+  }
 }
 
 function is_signed_in() {
@@ -110,11 +131,15 @@ function update_status() {
     $('.login').hide();
     $('.logged-in').show();
     $('.logout').show();
+
+        $('header h1').html("Flix to watch");
   }
   else {
     $('.loading').hide();
     $('.login').show();
     $('.logged-in').hide();
     $('.logout').hide();
+
+    $('header h1').html("Login");
   }
 }

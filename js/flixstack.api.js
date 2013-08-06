@@ -13,6 +13,8 @@ var flixstack_api = {
     var post_data = {};
 
     if (flixstack_api.csrf_token) {
+      console.log(flixstack_api.csrf_token);
+      console.log(callback);
       callback();
       return;
     }
