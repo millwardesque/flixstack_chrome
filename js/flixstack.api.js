@@ -145,6 +145,25 @@ var flixstack_api = {
   },
 
   /**
+   * Marks a video as having been watched
+   *
+   * @param video_id
+   *  The ID of the video.
+   * @param callback
+   *  The callback to run when the call has finished.
+   */
+  mark_as_watched: function (video_id, callback) {
+    var url = flixstack_api.flixstack_domain + '/service/netflix/flixstack/targeted_actions/mark_as_watched.json';
+    var post_data = {
+      'video_id': video_id
+    };
+
+    flixstack_api.get_csrf_token(function() {
+      $.post(url, post_data, callback, 'json');
+    });
+  },
+
+  /**
    * Checks if one or more video IDs is queued in the user's stack.
    *
    * @param video_ids

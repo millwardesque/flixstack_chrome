@@ -71,6 +71,12 @@ function create_stack(target, data) {
         '<div class="shelf mobile-grid-100 grid-parent" style="display:none"><div class="content mobile-grid-100"><a class="mark-as-watched mobile-grid-50 grid-parent" href="#">Mark as watched</a><a class="remove mobile-grid-50" href="#">Remove</a></div></div>' +
         '</li>');
 
+    $('.mark-as-watched', stack_item).click(function(e) {
+      var movie_id = $(this).parents('.movie').attr('data-movieid');
+      flixstack_api.mark_as_watched(movie_id, function() {
+        $(stack_item).remove();
+      });
+    });
     $('.remove', stack_item).click(function(e) {
       var movie_id = $(this).parents('.movie').attr('data-movieid');
       flixstack_api.remove_from_stack(movie_id, function() {
