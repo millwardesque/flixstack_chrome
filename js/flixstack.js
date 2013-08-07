@@ -22,7 +22,7 @@ function create_links() {
     }
   });
 
-  check_queued(ids_to_queue, function(data, textStatus) {
+  flixstack_api.check_queued(ids_to_queue, function(data, textStatus) {
     for (var key in data['ids']) {
       queued_map[key] = data['ids'][key];
     }
