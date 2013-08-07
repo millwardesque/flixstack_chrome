@@ -131,7 +131,7 @@ footer .login-links {
 }
 
 .flixstack-list .odd {
-  background: #eaf2f8;
+  background: #f1f5f8;
 }
 
 .flixstack-list a {
@@ -159,7 +159,6 @@ footer .login-links {
 .shelf {
   background: url(../images/drawer-top-arrow-left.png) no-repeat;
   padding-top: 14px;
-  margin-bottom:10px;
 }
 
 .shelf a {

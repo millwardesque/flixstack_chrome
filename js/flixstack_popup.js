@@ -78,13 +78,13 @@ function create_stack(target, data) {
     $('.mark-as-watched', stack_item).click(function(e) {
       var movie_id = $(this).parents('.movie').attr('data-movieid');
       flixstack_api.mark_as_watched(movie_id, function() {
-        $(stack_item).remove();
+        $('[data-movieid="' + movie_id + '"]').remove();
       });
     });
     $('.remove', stack_item).click(function(e) {
       var movie_id = $(this).parents('.movie').attr('data-movieid');
       flixstack_api.remove_from_stack(movie_id, function() {
-        $(stack_item).remove();
+        $('[data-movieid="' + movie_id + '"]').remove();
       });
     });
 
