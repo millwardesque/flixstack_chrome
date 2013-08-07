@@ -24,6 +24,7 @@ $(document).ready(function() {
     flixstack_api.logout(function(data, textStatus) {
       user = undefined;
       update_status();
+      add_message("You have successfully logged out.<br />Come back soon!");
       remove_links();
     });
     update_status();
@@ -64,10 +65,13 @@ $(document).ready(function() {
 function create_stack(target, data) {
   for (var i in data) {
     var is_odd = i % 2;
-    var stack_item = $('<li class="movie ' + (is_odd ? "odd" : "even") + ' clearfix" data-movieid="' + data[i]["Video ID"] + '"><a class="movie-entry mobile-grid-90 grid-parent">' + 
+    var is_first = (i == 0);
+    var is_last = (i == (data.length - 1));
+
+    var stack_item = $('<li class="movie ' + (is_odd ? "odd" : "even") + (is_first ? ' first' : '') + (is_last ? ' last' : '') + ' clearfix" data-movieid="' + data[i]["Video ID"] + '"><a class="movie-entry mobile-grid-85 grid-parent">' + 
         '<div class="boxart mobile-grid-25">' + data[i]["Video Image"] + '</div>' +
         '<div class="movie-title mobile-grid-65">' + data[i].node_title + '</div></a>' + 
-        '<div class="shelf-toggle mobile-grid-10"><a href="#"><img alt="Toggle for opening the shelf" src="images/arrow-closed.png" /></a></div>' +
+        '<div class="shelf-toggle mobile-grid-15"><a href="#"><img alt="Toggle for opening the shelf" src="images/arrow-closed.png" /></a></div>' +
         '<div class="shelf mobile-grid-100 grid-parent" style="display:none"><div class="content mobile-grid-100"><a class="mark-as-watched mobile-grid-50 grid-parent" href="#">Mark as watched</a><a class="remove mobile-grid-50" href="#">Remove</a></div></div>' +
         '</li>');
 
