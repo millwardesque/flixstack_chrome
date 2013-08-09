@@ -69,7 +69,7 @@ function create_stack(target, data) {
     var is_first = (i == 0);
     var is_last = (i == (data.length - 1));
 
-    var stack_item = $('<li class="movie ' + (is_odd ? "odd" : "even") + (is_first ? ' first' : '') + (is_last ? ' last' : '') + ' clearfix" data-movieid="' + data[i]["Video ID"] + '"><a class="movie-entry mobile-grid-85 grid-parent">' + 
+    var stack_item = $('<li class="movie ' + (is_odd ? "odd" : "even") + (is_first ? ' first' : '') + (is_last ? ' last' : '') + ' clearfix" data-movieid="' + data[i]["Video ID"] + '"><a class="movie-entry mobile-grid-85 grid-parent" title="' + data[i].node_title + '">' + 
         '<div class="boxart mobile-grid-25">' + data[i]["Video Image"] + '</div>' +
         '<div class="movie-title mobile-grid-65">' + data[i].node_title + '</div></a>' + 
         '<div class="shelf-toggle mobile-grid-15"><a href="#"><img alt="Toggle for opening the shelf" src="images/arrow-closed.png" /></a></div>' +
