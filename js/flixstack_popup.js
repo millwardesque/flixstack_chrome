@@ -9,7 +9,7 @@ $(document).ready(function() {
     update_status();
 
     if (is_signed_in()) {
-      create_links();
+      notify_create_links();
 
       flixstack_api.load_stack(function(data, textStatus) {
         create_stack('.logged-in ol', data);
@@ -25,7 +25,7 @@ $(document).ready(function() {
       user = undefined;
       update_status();
       add_message("You have successfully logged out.<br />Come back soon!");
-      remove_links();
+      notify_remove_links();
     });
     update_status();
   });
@@ -40,7 +40,7 @@ $(document).ready(function() {
     flixstack_api.login(username, password, function(data, textStatus) {
       user = data;
       update_status();
-      create_links();
+      notify_create_links();
       flixstack_api.load_stack(function(data, textStatus) {
         create_stack('.logged-in ol', data);
       });
@@ -80,12 +80,14 @@ function create_stack(target, data) {
       var movie_id = $(this).parents('.movie').attr('data-movieid');
       flixstack_api.mark_as_watched(movie_id, function() {
         $('[data-movieid="' + movie_id + '"]').remove();
+        notify_video_watched(movie_id);
       });
     });
     $('.remove', stack_item).click(function(e) {
       var movie_id = $(this).parents('.movie').attr('data-movieid');
       flixstack_api.remove_from_stack(movie_id, function() {
         $('[data-movieid="' + movie_id + '"]').remove();
+        notify_video_removed(movie_id);
       });
     });
 
@@ -116,7 +118,7 @@ function add_find_more_movies_link(target) {
   $(target).after(stack_item);
 }
 
-function create_links() {
+function notify_create_links() {
   if (chrome.tabs) {
     chrome.tabs.getSelected(null, function(tab) {
       chrome.tabs.sendMessage(tab.id, { operation: "create links" }, function(response) {
@@ -126,11 +128,31 @@ function create_links() {
   }
 }
 
-function remove_links() {
+function notify_remove_links() {
   if (chrome.tabs) {
     chrome.tabs.getSelected(null, function(tab) {
       chrome.tabs.sendMessage(tab.id, { operation: "remove links" }, function(response) {
         console.log("Links removed");
+      });
+    });
+  }
+}
+
+function notify_video_removed(video_id) {
+  if (chrome.tabs) {
+    chrome.tabs.getSelected(null, function(tab) {
+      chrome.tabs.sendMessage(tab.id, { operation: "video removed", video_id: video_id }, function(response) {
+        console.log("Video " + video_id + " removed.");
+      });
+    });
+  }
+}
+
+function notify_video_watched(video_id) {
+  if (chrome.tabs) {
+    chrome.tabs.getSelected(null, function(tab) {
+      chrome.tabs.sendMessage(tab.id, { operation: "video watched", video_id: video_id }, function(response) {
+        console.log("Video " + video_id + " watched.");
       });
     });
   }

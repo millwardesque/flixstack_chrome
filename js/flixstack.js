@@ -8,6 +8,12 @@ chrome.runtime.onMessage.addListener(
     else if (request.operation == "remove links") {
       remove_links();
     }
+    else if (request.operation == "video removed") {
+      update_link(request.video_id, true);
+    }
+    else if (request.operation == "video watched") {
+      update_link(request.video_id, true);
+    }
   }
 );
 console.log("FlixStack Loaded");
@@ -39,6 +45,17 @@ function create_links() {
         }
       }
     });
+  });
+}
+
+function update_link(video_id, is_add_link) {
+  $('.vbox_' + video_id).parent().each(function(index, element) {
+      $('.flixstack-wrapper', element).remove();
+
+      var image_element = $('.boxShotImg', element);
+      var title = $(image_element).attr('alt');
+      var img = $(image_element).attr('src');
+      $(element).append(make_link(is_add_link, title, video_id, img));
   });
 }
 
