@@ -103,6 +103,8 @@ function create_stack(target, data) {
       e.preventDefault();
     });
     $(target).append(stack_item);
+
+    $('.movie-title', stack_item).truncate();
   }
 
   if (data.length == 0) {
