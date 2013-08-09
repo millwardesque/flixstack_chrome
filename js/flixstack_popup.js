@@ -69,7 +69,7 @@ function create_stack(target, data) {
     var is_first = (i == 0);
     var is_last = (i == (data.length - 1));
 
-    var stack_item = $('<li class="movie ' + (is_odd ? "odd" : "even") + (is_first ? ' first' : '') + (is_last ? ' last' : '') + ' clearfix" data-movieid="' + data[i]["Video ID"] + '"><a class="movie-entry mobile-grid-85 grid-parent" title="' + data[i].node_title + '">' + 
+    var stack_item = $('<li class="movie ' + (is_odd ? "odd" : "even") + (is_first ? ' first' : '') + (is_last ? ' last' : '') + ' clearfix" data-movieid="' + data[i]["Video ID"] + '"><a class="movie-entry mobile-grid-85 grid-parent" title="Watch ' + data[i].node_title + '">' + 
         '<div class="boxart mobile-grid-25">' + data[i]["Video Image"] + '</div>' +
         '<div class="movie-title mobile-grid-65">' + data[i].node_title + '</div></a>' + 
         '<div class="shelf-toggle mobile-grid-15"><a href="#"><img alt="Toggle for opening the shelf" src="images/arrow-closed.png" /></a></div>' +
@@ -107,11 +107,13 @@ function create_stack(target, data) {
 
     $('.movie-title', stack_item).truncate();
   }
+  
+  add_find_more_movies_link(target);
+}
 
-  if (data.length == 0) {
-    var stack_item = $("<li><div class=\"no-movies mobile-grid-100\">You don't have any movies saved.<a href=\"http://www.netflix.com\" target=\"_blank\">Why not add some?</a></div></li>");
-    $(target).append(stack_item);
-  }
+function add_find_more_movies_link(target) {
+  var stack_item = $("<div class=\"find-more-movies mobile-grid-100\"><a href=\"http://www.netflix.com\" target=\"_blank\">Find more movies</a></div>");
+  $(target).after(stack_item);
 }
 
 function create_links() {
