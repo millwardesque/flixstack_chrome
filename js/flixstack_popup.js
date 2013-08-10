@@ -1,4 +1,5 @@
-var user;
+var user,
+  spinners = {};
 
 $(document).ready(function() {
   // Initial page setup.
@@ -20,6 +21,7 @@ $(document).ready(function() {
   // Click on the logout button.
   $('.logout').click(function() {
     show_loading();
+    console.log("Showing loading...");
 
     flixstack_api.logout(function(data, textStatus) {
       user = undefined;
@@ -42,6 +44,7 @@ $(document).ready(function() {
       update_status();
       notify_create_links();
       flixstack_api.load_stack(function(data, textStatus) {
+        $('.logged-in .flixstack-list').html('<ol></ol>');
         create_stack('.logged-in ol', data);
       });
     },
@@ -176,7 +179,11 @@ function show_loading() {
   $('.loading').show();
   $('.logged-in').hide();
   $('.login').hide();
-  $('.logout').show();
+  $('.logout').hide();
+
+  $('.loading').each(function(index, element) {
+    add_spinner(element, {left: "210px"});
+  });
    
   $('.messages').hide().html('');
 }
@@ -190,7 +197,7 @@ function update_status() {
     $('.logged-in').show();
     $('.logout').show();
 
-        $('header h1').html("Flix to watch");
+    $('header h1').html("Flix to watch");
   }
   else {
     $('.loading').hide();
@@ -199,5 +206,39 @@ function update_status() {
     $('.logout').hide();
 
     $('header h1').html("Login");
+  }
+}
+
+function add_spinner(element, options) {
+  var opts = $.extend({
+    lines: 9, // The number of lines to draw
+    length: 5, // The length of each line
+    width: 3, // The line thickness
+    radius: 4, // The radius of the inner circle
+    corners: 1, // Corner roundness (0..1)
+    rotate: 0, // The rotation offset
+    direction: 1, // 1: clockwise, -1: counterclockwise
+    color: '#000', // #rgb or #rrggbb
+    speed: 1, // Rounds per second
+    trail: 60, // Afterglow percentage
+    shadow: false, // Whether to render a shadow
+    hwaccel: false, // Whether to use hardware acceleration
+    className: 'spinner', // The CSS class to assign to the spinner
+    zIndex: 2e9, // The z-index (defaults to 2000000000)
+    top: 'auto', // Top position relative to parent in px
+    left: 'auto' // Left position relative to parent in px
+  }, options);
+
+  if (!spinners[element]) {
+    spinners[element] = new Spinner(opts).spin(element);
+  }
+  else {
+    spinners[element].spin(element);
+  }
+}
+
+function remove_spinner(element) {
+  if (spinners[element]) {
+    spinners[element].stop();
   }
 }

@@ -82,8 +82,8 @@ function remove_links() {
  */
 function make_link(is_add_link, title, video_id, img) {
   var wrapper = $('<div class="flixstack-wrapper"></div>');
-  var anchor_text = is_add_link ? "Add to FlixStack" : "Remove from FlixStack";
-  var anchor_class = is_add_link ? "add" : "remove";
+  var anchor_text = is_add_link ? "Add to FlixStack" : "Mark as Watched";
+  var anchor_class = is_add_link ? "add" : "watched";
   var anchor = $('<a class="' + anchor_class + '" href="#">' + anchor_text + '</a>');
 
   // Click-handling
@@ -93,7 +93,7 @@ function make_link(is_add_link, title, video_id, img) {
       onclick_add(e, title, video_id, img);
     }
     else {
-      onclick_remove(e, video_id);
+      onclick_watched(e, video_id);
     }
   });
 
@@ -102,17 +102,17 @@ function make_link(is_add_link, title, video_id, img) {
 }
 
 /**
- * Click handler that removes a video from the queue.
+ * Click handler that marks a video as watched
  *
  * @param e
  *  The event that was fired.
  * @param video_id
- *  The ID of the video to remove.
+ *  The ID of the video to mark as watched.
  */
-function onclick_remove(e, video_id) {
+function onclick_watched(e, video_id) {
   var jq_e = $(e.target).parents('.agMovie');
 
-  flixstack_api.remove_from_stack(video_id, function(data, textStatus) {
+  flixstack_api.mark_as_watched(video_id, function(data, textStatus) {
     var image_element = $('.boxShotImg', jq_e);
     var title = $(image_element).attr('alt');
     var video_img = $(image_element).attr('src');
