@@ -221,6 +221,22 @@ footer .login-links {
   text-align:right;
 }
 
+.flixstack-settings .shelf {
+  background-image: none;
+  margin-bottom: 0;
+  padding-top: 0;
+}
+
+.flixstack-settings .shelf a {
+  text-decoration:underline;
+}
+
+.flixstack-settings .shelf .content {
+  padding-top:6px;
+  padding-bottom:4px;
+  height:20px;
+}
+
 .flixstack-settings {
   padding-bottom: 0;
   color: #ffffff;
@@ -229,16 +245,4 @@ footer .login-links {
 
 .flixstack-settings .logout {
   text-align: right;
-}
-
-.flixstack-settings .shelf {
-  background-image: none;
-  margin-bottom: 0;
-  padding-top: 0;
-}
-
-.flixstack-settings .shelf .content {
-  padding-top:6px;
-  padding-bottom:4px;
-  height:20px;
 }
