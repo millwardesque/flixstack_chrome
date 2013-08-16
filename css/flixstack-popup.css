@@ -126,7 +126,7 @@ footer .login-links {
 }
 
 .flixstack-list {
-  max-height: 400px;
+  max-height: 420px;
   overflow:scroll;
 }
 
@@ -223,12 +223,8 @@ footer .login-links {
 
 .flixstack-settings {
   padding-bottom: 0;
-  border-top: 1px dotted #d8d8d8;
-  padding-top: 10px;
-}
-
-.flixstack-settings {
   color: #ffffff;
+  font-size:12px;
 }
 
 .flixstack-settings .logout {
@@ -236,6 +232,13 @@ footer .login-links {
 }
 
 .flixstack-settings .shelf {
-  background-image: url(../images/drawer-top-arrow-right.png);
+  background-image: none;
   margin-bottom: 0;
+  padding-top: 0;
+}
+
+.flixstack-settings .shelf .content {
+  padding-top:6px;
+  padding-bottom:4px;
+  height:20px;
 }

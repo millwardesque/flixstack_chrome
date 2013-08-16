@@ -57,13 +57,6 @@ $(document).ready(function() {
     e.stopPropagation();
     return false;
   });
-
-  // Toggle the settings shelf
-  $('.settings-toggle').click(function(e) {
-      $(this).siblings('.shelf').slideToggle();
-      e.stopPropagation();
-      e.preventDefault();
-    });
 }); // End document.ready()
 
 function create_stack(target, data) {
