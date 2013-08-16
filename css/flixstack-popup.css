@@ -29,12 +29,27 @@ header .title {
 }
 
 .messages {
+  background: #fdd;
   border: 1px dotted #c99;
   margin-top: 10px;
   margin-bottom: 0;
-  background: #fdd;
   padding: 8px;
   list-style: none;
+}
+
+.messages.info {
+  background: #dfd;
+  border-color: #9c9;
+}
+
+.messages.error {
+  background: #fdd;
+  border-color: #c99;
+}
+
+.messages.mixed {
+    background: #fffbcd;
+    border-color: #ffea00;
 }
 
 /**

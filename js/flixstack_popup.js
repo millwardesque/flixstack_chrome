@@ -27,7 +27,7 @@ $(document).ready(function() {
       user = undefined;
       notify_remove_links();
       update_status();
-      add_message("You have successfully logged out.<br />Come back soon!");
+      add_message("You have successfully logged out.<br />Come back soon!", "info");
     });
     update_status();
   });
@@ -50,7 +50,7 @@ $(document).ready(function() {
     },
     function() {
       update_status();
-      add_message('Login failed, please try again.');
+      add_message('Login failed, please try again.', "error");
     });
 
     e.preventDefault();
@@ -170,9 +170,33 @@ function is_signed_in() {
   }
 }
 
-function add_message(message) {
-  $('.messages').append('<li>' + message + '</li>');
-  $('.messages').show();
+/**
+ * Adds a message to the system
+ */
+function add_message(message, type) {
+  var $messages = $('.messages');
+
+  if (!type) {
+    type = 'info';
+  }
+
+  $messages.append('<li>' + message + '</li>');
+  $messages.show();
+
+  if (($messages.hasClass('info') && type != 'info') ||
+      ($messages.hasClass('error') && type != 'error')) {
+    $messages.addClass('mixed');
+  }
+  else {
+    $messages.addClass(type);
+  }
+}
+
+/**
+ * Clears messages from display.
+ */
+function clear_messages() {
+  $('.messages').hide().html('').removeClass('info').removeClass('error').removeClass('mixed');
 }
 
 function show_loading() {
@@ -185,11 +209,11 @@ function show_loading() {
     add_spinner(element, {left: "210px"});
   });
    
-  $('.messages').hide().html('');
+  clear_messages();
 }
 
 function update_status() {
-  $('.messages').hide().html('');
+  clear_messages();
 
   if (is_signed_in()) {
     $('.loading').hide();
