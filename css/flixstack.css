@@ -55,3 +55,24 @@
   margin-left: 0;
   margin-right: 0;
 }
+
+/**
+ * Episode list overrides
+ */
+.episodeList .flixstack-wrapper {
+  margin-top:0;
+  height:30px;
+  
+}
+
+.episodeList .flixstack-wrapper a {
+  height: 23px;
+  padding-top: 0;
+  padding-bottom: 2px;
+  margin-left: 0;
+}
+
+.episodeList .flixstack-wrapper .add {
+  margin-left: 0;
+  margin-right: 0;
+}

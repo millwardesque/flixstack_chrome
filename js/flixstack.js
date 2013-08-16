@@ -27,6 +27,7 @@ console.log("FlixStack Loaded");
 function collect_video_info() {
   var video_ids = [];
 
+  // Listing page links.
   $('.agMovie .playLink').each(function(index, element) {
     var video_id = get_video_id_from_url($(element).attr('href'));
     if (video_id) {
@@ -44,6 +45,7 @@ function collect_video_info() {
     }
   });
 
+  // Details page link.
   $('#displaypage-overview-image a').each(function(index, element) {
     var video_id = $(this).attr('data-movieid');
     if (video_id) {
@@ -57,6 +59,23 @@ function collect_video_info() {
         };
       }
       video_map[video_id].containers.push($('#displaypage-overview-image'));
+      video_ids.push(video_id);
+    }
+  });
+
+  // TV episode links.
+  $('.episodeList li').each(function(index, element) {
+    var video_id = $(this).attr('data-episodeid');
+    if (video_id) {
+      if (typeof video_map[video_id] == 'undefined') {
+        video_map[video_id] = {
+          title: "S" + $(element).parents('#displaypage-bodycontent').find('.selectorTxt').html() + "E" + $('.seqNum').html() + ": " + $('h1').html(),
+          image: $('#displaypage-overview-image .boxShotImg').attr('src'),
+          containers: [],
+          is_in_stack: undefined
+        };
+      }
+      video_map[video_id].containers.push($(element));
       video_ids.push(video_id);
     }
   });
