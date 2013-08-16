@@ -43,6 +43,10 @@
 /**
  * Video Details page overrides
  */
+ #displaypage-overview-image .displayPagePlayable + .flixstack-wrapper {
+  margin-top: 20px;
+ }
+
  #displaypage-overview-image .flixstack-wrapper .watched {
   margin-left:0;
 }

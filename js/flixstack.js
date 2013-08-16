@@ -44,7 +44,7 @@ function collect_video_info() {
     }
   });
 
-  $('.displayPagePlayable a').each(function(index, element) {
+  $('#displaypage-overview-image a').each(function(index, element) {
     var video_id = $(this).attr('data-movieid');
     if (video_id) {
       if (typeof video_map[video_id] == 'undefined') {
