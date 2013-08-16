@@ -7,15 +7,34 @@
 }
 
 .flixstack-wrapper a {
-  border-radius: 8px;
-  border: 1px rgb(0, 56, 117) solid;
-  padding: 2px 8px;
-  margin-top: 4px;
-  background: rgb(0, 56, 117);
-  color: #ffffff;
+  display: block;
+  height: 18px;
+  padding: 2px 0 0 0;
+  font-size: 12px;
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
+  text-align:center;
+  color:#fafafa;
+}
+.flixstack-wrapper .add {
+  width: 169px;
+  margin: 0 auto;
+  background: url(http://flixqueue.local/sites/flixstack.com/themes/flixstack/images/button-blue-long.png) no-repeat;
 }
 
-.flixstack-wrapper a.remove {
-  border-color: #B9090B;
-  background: #B9090B;
+.flixstack-wrapper .watched {
+  float:left;
+  width: 80px;
+  margin-right: 10px;
+  margin-left: 10px;
+  background: url(http://flixqueue.local/sites/flixstack.com/themes/flixstack/images/button-green-short.png) no-repeat;
+}
+
+.recentlyWatched .flixstack-wrapper .watched {
+  margin-left:0;
+}
+
+.flixstack-wrapper .remove {
+  float:left;
+  width: 80px;
+  background: url(http://flixqueue.local/sites/flixstack.com/themes/flixstack/images/button-red-short.png) no-repeat;
 }

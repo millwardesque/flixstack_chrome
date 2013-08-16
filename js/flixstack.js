@@ -82,7 +82,7 @@ function remove_links() {
  */
 function make_link(is_add_link, title, video_id, img) {
   var wrapper = $('<div class="flixstack-wrapper"></div>');
-  var anchor_text = is_add_link ? "Add to FlixStack" : "Mark as Watched";
+  var anchor_text = is_add_link ? "Add to FlixStack" : "Watched";
   var anchor_class = is_add_link ? "add" : "watched";
   var anchor = $('<a class="' + anchor_class + '" href="#">' + anchor_text + '</a>');
 
@@ -96,23 +96,59 @@ function make_link(is_add_link, title, video_id, img) {
       onclick_watched(e, video_id);
     }
   });
-
   wrapper.append(anchor);
+
+  // Add a remove link as well as the watched link
+  if (!is_add_link) { 
+    var remove_anchor = $('<a class="remove" href="#">Remove</a>');
+    $(remove_anchor).click(function(e) {
+      $(e).html("Loading...");
+      onclick_remove(e, video_id);
+    });
+    
+    wrapper.append(remove_anchor);
+  }
+
   return wrapper;
 }
 
 /**
- * Click handler that marks a video as watched
+ * Click handler that marks a video as watched.
  *
  * @param e
  *  The event that was fired.
- * @param video_id
+ * @param video_id.
  *  The ID of the video to mark as watched.
  */
 function onclick_watched(e, video_id) {
   var jq_e = $(e.target).parents('.agMovie');
 
   flixstack_api.mark_as_watched(video_id, function(data, textStatus) {
+    var image_element = $('.boxShotImg', jq_e);
+    var title = $(image_element).attr('alt');
+    var video_img = $(image_element).attr('src');
+
+    var new_element = make_link(true, title, video_id, video_img);
+    $(e.target).parents('.flixstack-wrapper').replaceWith(new_element);
+  }); 
+
+  e.preventDefault();
+  e.stopPropagation();
+  return false;
+}
+
+/**
+ * Click handler that removes a video from the stack.
+ *
+ * @param e
+ *  The event that was fired.
+ * @param video_id.
+ *  The ID of the video to remove.
+ */
+function onclick_remove(e, video_id) {
+  var jq_e = $(e.target).parents('.agMovie');
+
+  flixstack_api.remove_from_stack(video_id, function(data, textStatus) {
     var image_element = $('.boxShotImg', jq_e);
     var title = $(image_element).attr('alt');
     var video_img = $(image_element).attr('src');
