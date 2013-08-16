@@ -81,23 +81,19 @@ footer .login-links {
 
 .button,
 .submit input {
-  background: url(../images/button.png) no-repeat;
+  background: url(../images/button-blue-tall.png) no-repeat;
   font-size: 1.2em;
-  width: 122px;
-  height:34px;
+  width: 123px;
+  height:38px;
   border: none;
   font-weight: bold;
   color: #fff;
+  cursor: pointer;
 }
 
 .button {
   text-decoration: none;
   text-align: center;
-}
-
-.button:active,
-.submit input:active {
-  background-image: url(../images/button-down.png);
 }
 
 /**
