@@ -25,9 +25,9 @@ $(document).ready(function() {
 
     flixstack_api.logout(function(data, textStatus) {
       user = undefined;
+      notify_remove_links();
       update_status();
       add_message("You have successfully logged out.<br />Come back soon!");
-      notify_remove_links();
     });
     update_status();
   });

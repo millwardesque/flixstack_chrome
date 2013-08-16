@@ -74,6 +74,7 @@ function get_video_id_from_url(url) {
 }
 
 function remove_links() {
+  $('.flixstack-wrapper').hide();
   $('.flixstack-wrapper').remove();
 }
 
