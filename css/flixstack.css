@@ -13,8 +13,9 @@
   font-size: 12px;
   font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
   text-align:center;
-  color:#fafafa;
+  color:#fafafa!important;  /* Adding !important for now so I don't have to create a separate CSS rule to handle all of Netflix's ID-based styling. */
 }
+
 .flixstack-wrapper .add {
   width: 169px;
   margin: 0 auto;
@@ -37,4 +38,16 @@
   float:left;
   width: 80px;
   background: url(http://flixqueue.local/sites/flixstack.com/themes/flixstack/images/button-red-short.png) no-repeat;
+}
+
+/**
+ * Video Details page overrides
+ */
+ #displaypage-overview-image .flixstack-wrapper .watched {
+  margin-left:0;
+}
+
+#displaypage-overview-image .flixstack-wrapper .add {
+  margin-left: 0;
+  margin-right: 0;
 }

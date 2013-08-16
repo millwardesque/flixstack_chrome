@@ -44,6 +44,23 @@ function collect_video_info() {
     }
   });
 
+  $('.displayPagePlayable a').each(function(index, element) {
+    var video_id = $(this).attr('data-movieid');
+    if (video_id) {
+      if (typeof video_map[video_id] == 'undefined') {
+        var $image_element = $('.boxShotImg', element);
+        video_map[video_id] = {
+          title: $image_element.attr('alt'),
+          image: $image_element.attr('src'),
+          containers: [],
+          is_in_stack: undefined
+        };
+      }
+      video_map[video_id].containers.push($('#displaypage-overview-image'));
+      video_ids.push(video_id);
+    }
+  });
+
   return video_ids;
 }
 
