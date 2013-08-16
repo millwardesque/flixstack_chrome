@@ -156,6 +156,9 @@ footer .login-links {
 
 .flixstack-list li .boxart img {
   width: 48px;
+  padding: 4px;
+  border: solid 1px #ddf;
+  background: #fff;
 }
 
 .flixstack-list li .movie-title {
