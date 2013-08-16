@@ -163,11 +163,15 @@ footer .login-links {
 
 .flixstack-list li .movie-title {
   font-size: 1.2em;
-  margin-top: 20px;
+  margin-top: 24px;
+}
+
+.flixstack-list li .movie-title:hover {
+  text-decoration:underline;
 }
 
 .flixstack-list li .shelf-toggle {
-  padding-top: 24px;
+  padding-top: 28px;
 }
 
 .find-more-movies {
