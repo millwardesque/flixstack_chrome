@@ -1,5 +1,5 @@
-var user,
-  spinners = {};
+var user, // Currently logged in user information.
+  spinners = {};  // A hash of all active spinners.
 
 $(document).ready(function() {
   // Initial page setup.
@@ -59,6 +59,14 @@ $(document).ready(function() {
   });
 }); // End document.ready()
 
+/**
+ * Create the stack of movies in the popup window.
+ *
+ * @target
+ *  The container for the list items
+ * @data
+ *  An array of objects describing the movie.
+ */
 function create_stack(target, data) {
   for (var i in data) {
     var is_odd = i % 2;
@@ -109,11 +117,20 @@ function create_stack(target, data) {
   add_find_more_movies_link(target);
 }
 
+/**
+ * Adds the "Find more movies" link to the bottom of the FlixStack list.
+ *
+ * @target
+ *  The element after which we'll add the target.
+ */
 function add_find_more_movies_link(target) {
   var stack_item = $("<div class=\"find-more-movies mobile-grid-100\"><a href=\"http://www.netflix.com\" target=\"_blank\">Find more movies</a></div>");
   $(target).after(stack_item);
 }
 
+/**
+ * Notify the on-page script that it should add all of the FlixStack links.
+ */
 function notify_create_links() {
   if (chrome.tabs) {
     chrome.tabs.getSelected(null, function(tab) {
@@ -124,6 +141,9 @@ function notify_create_links() {
   }
 }
 
+/**
+ * Notify the on-page script that it should remove any FlixStack links.
+ */
 function notify_remove_links() {
   if (chrome.tabs) {
     chrome.tabs.getSelected(null, function(tab) {
@@ -134,6 +154,12 @@ function notify_remove_links() {
   }
 }
 
+/**
+ * Notify the on-page script that a video has been removed from the stack.
+ *
+ * @param video_id
+ *  The video ID that was removed.
+ */
 function notify_video_removed(video_id) {
   if (chrome.tabs) {
     chrome.tabs.getSelected(null, function(tab) {
@@ -144,6 +170,12 @@ function notify_video_removed(video_id) {
   }
 }
 
+/**
+ * Notify the on-page script that a video has been watched.
+ *
+ * @param video_id
+ *  The video ID that was watched.
+ */
 function notify_video_watched(video_id) {
   if (chrome.tabs) {
     chrome.tabs.getSelected(null, function(tab) {
@@ -154,6 +186,9 @@ function notify_video_watched(video_id) {
   }
 }
 
+/**
+ * Returns whether or not a user has signed in.
+ */
 function is_signed_in() {
   if (typeof user == "object" && user.user.uid > 0) {
     return true;
@@ -192,6 +227,9 @@ function clear_messages() {
   $('.messages').hide().html('').removeClass('info').removeClass('error').removeClass('mixed');
 }
 
+/**
+ * Replaces the active pane with a loading pane.
+ */
 function show_loading() {
   $('.loading').show();
   $('.logged-in').hide();
@@ -205,6 +243,9 @@ function show_loading() {
   clear_messages();
 }
 
+/**
+ * Updates the state of the window panes.
+ */
 function update_status() {
   clear_messages();
 
@@ -226,6 +267,9 @@ function update_status() {
   }
 }
 
+/**
+ * Adds a jQuery spinner to an element.
+ */
 function add_spinner(element, options) {
   var opts = $.extend({
     lines: 9, // The number of lines to draw
