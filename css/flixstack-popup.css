@@ -243,6 +243,10 @@ footer .login-links {
   font-size:12px;
 }
 
+.flixstack-settings .leave-feedback {
+  text-align: center;
+}
+
 .flixstack-settings .logout {
   text-align: right;
 }

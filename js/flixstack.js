@@ -215,7 +215,7 @@ function make_link(video_id) {
   var wrapper = $('<div class="flixstack-wrapper"></div>');
   var anchor_text = video.is_in_stack ? "Watched" : "Add to FlixStack";
   var anchor_class = video.is_in_stack ? "watched" : "add";
-  var anchor = $('<a class="' + anchor_class + '" href="#">' + anchor_text + '</a>');
+  var anchor = $('<a class="' + anchor_class + '" title="' + anchor_text + '" href="#">' + anchor_text + '</a>');
 
   // Click-handling on the element.
   $(anchor).click(function(e) {
@@ -231,7 +231,7 @@ function make_link(video_id) {
 
   // Add a remove link as well as the watched link
   if (video.is_in_stack) { 
-    var remove_anchor = $('<a class="remove" href="#">Remove</a>');
+    var remove_anchor = $('<a class="remove" title="Remove from FlixStack" href="#">Remove</a>');
     $(remove_anchor).click(function(e) {
       $(e.target).parent('.flixstack-wrapper').children('a').html("Loading...").off('click');
       onclick_remove(e, video_id);

@@ -76,8 +76,8 @@ function create_stack(target, data) {
     var stack_item = $('<li class="movie ' + (is_odd ? "odd" : "even") + (is_first ? ' first' : '') + (is_last ? ' last' : '') + ' clearfix" data-movieid="' + data[i]["Video ID"] + '"><a class="movie-entry mobile-grid-85 grid-parent" title="Watch ' + data[i].node_title + '">' + 
         '<div class="boxart mobile-grid-25">' + data[i]["Video Image"] + '</div>' +
         '<div class="movie-title mobile-grid-65">' + data[i].node_title + '</div></a>' + 
-        '<div class="shelf-toggle mobile-grid-15"><a href="#"><img alt="Toggle for opening the shelf" src="images/arrow-closed.png" /></a></div>' +
-        '<div class="shelf mobile-grid-100 grid-parent" style="display:none"><div class="content mobile-grid-100"><a class="mark-as-watched mobile-grid-50 grid-parent" href="#">Mark as watched</a><a class="remove mobile-grid-50" href="#">Remove</a></div></div>' +
+        '<div class="shelf-toggle mobile-grid-15"><a title="Toggle the video details" href="#"><img alt="Toggle for opening the details" src="images/arrow-closed.png" /></a></div>' +
+        '<div class="shelf mobile-grid-100 grid-parent" style="display:none"><div class="content mobile-grid-100"><a class="mark-as-watched mobile-grid-50 grid-parent" title="Mark this video as watched" href="#">Mark as watched</a><a class="remove mobile-grid-50" title="Remove this video from the stack" href="#">Remove</a></div></div>' +
         '</li>');
 
     $('.mark-as-watched', stack_item).click(function(e) {
@@ -124,7 +124,7 @@ function create_stack(target, data) {
  *  The element after which we'll add the target.
  */
 function add_find_more_movies_link(target) {
-  var stack_item = $("<div class=\"find-more-movies mobile-grid-100\"><a href=\"http://www.netflix.com\" target=\"_blank\">Find more movies</a></div>");
+  var stack_item = $("<div class=\"find-more-movies mobile-grid-100\"><a title=\"Find more movies to watch\" href=\"http://www.netflix.com\" target=\"_blank\">Find more movies</a></div>");
   $(target).after(stack_item);
 }
 
