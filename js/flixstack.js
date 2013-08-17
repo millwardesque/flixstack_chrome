@@ -1,10 +1,28 @@
-var video_map = {}; // Stores information about each video on the current page.
+var video_map = {};   // Stores information about each video on the current page.
+var page_height = 0;  // Stores the current page height, used for detected AJAXed-in new elements.
+var scroll_tracked = false; // Flag to indicate whether or not we've already started tracking the scrolls for detecting AJAXed-in new elements.
 
 // Event handlers for messages sent by the Chrome extension.
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
     if (request.operation == "create links") {
       create_links();
+      page_height = $('body').height();
+
+      // Attach a scroll handler to the window if we haven't already.
+      if (!scroll_tracked) {
+        scroll_tracked = true;
+        
+        $(window).scroll(function() {
+          var new_page_height = $('body').height();
+
+          // If the page height is different, Netflix must've AJAXed in new content. Create more links.
+          if (new_page_height > page_height) {
+            page_height = new_page_height;
+            create_links();
+          }
+        });
+      }
     }
     else if (request.operation == "remove links") {
       remove_links();
