@@ -201,7 +201,7 @@ function make_link(video_id) {
 
   // Click-handling on the element.
   $(anchor).click(function(e) {
-    $(e).html("Loading...");
+    $(e.target).parent('.flixstack-wrapper').children('a').html("Loading...").off('click');
     if (video.is_in_stack) {
       onclick_watched(e, video_id);
     }
@@ -215,7 +215,7 @@ function make_link(video_id) {
   if (video.is_in_stack) { 
     var remove_anchor = $('<a class="remove" href="#">Remove</a>');
     $(remove_anchor).click(function(e) {
-      $(e).html("Loading...");
+      $(e.target).parent('.flixstack-wrapper').children('a').html("Loading...").off('click');
       onclick_remove(e, video_id);
     });
     
