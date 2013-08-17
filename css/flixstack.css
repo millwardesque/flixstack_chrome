@@ -76,3 +76,19 @@
   margin-left: 0;
   margin-right: 0;
 }
+
+/**
+ * Netflix original series overrides
+ */
+.videoRow .flixstack-wrapper {
+  margin-top: 4px;
+}
+
+.videoRow .flixstack-wrapper .watched {
+  margin-left: 0;
+}
+
+.videoRow .flixstack-wrapper .add {
+  margin-left: 0;
+  margin-right: 0;
+}

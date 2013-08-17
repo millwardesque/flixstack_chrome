@@ -98,6 +98,24 @@ function collect_video_info() {
     }
   });
 
+  // Netflix Original Series' links.
+  $('.episodesContent .videoRow').each(function(index, element) {
+    var video_id = $('.videoImagery', this).attr('data-episode-id');
+    if (video_id) {
+      if (typeof video_map[video_id] == 'undefined') {
+        var show_info = $(this).parents('.module.Video').siblings('.module.ShowInfo');
+        video_map[video_id] = {
+          title: "S" + $(element).parent('.videoSeason').attr('data-season') + "E" + $('.episodeNumber', this).html() + ": " + $('.showTitle', show_info).html(),
+          image: $('.boxShotImg', show_info).attr('src'),
+          containers: [],
+          is_in_stack: undefined
+        };
+      }
+      video_map[video_id].containers.push($('.videoDetails', element));
+      video_ids.push(video_id);
+    }
+  });
+
   return video_ids;
 }
 
