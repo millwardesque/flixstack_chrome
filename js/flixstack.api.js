@@ -5,7 +5,7 @@
  */
 
 var flixstack_api = {
-  flixstack_domain: 'http://flixqueue.local', // Domain name of the FlixStack webservice.
+  flixstack_domain: 'http://www.flixstack.com', // Domain name of the FlixStack webservice.
   csrf_token: '',
 
   get_csrf_token: function(callback) {
