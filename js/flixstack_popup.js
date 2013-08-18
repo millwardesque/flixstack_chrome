@@ -354,8 +354,6 @@ function ga_track_click(category, action, label, value) {
   if (typeof _gaq != "undefined") {
     _gaq.push(['_trackEvent', category, action, label, value]);
   }
-  
-  console.log(typeof _gaq != "undefined" ? "Tracking (" + category + "," + action + "," + label + "," + value + ")" : "Google Analytics is not setup.");
 }
 
 /**
