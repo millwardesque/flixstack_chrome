@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "FlixStack",
   "description": "Add Netflix streaming videos to the FlixStack website",
-  "version": "0.4",
+  "version": "1.0",
   "permissions": [
     "tabs", "http://*/*", "http://flixqueue.local/"
   ],
