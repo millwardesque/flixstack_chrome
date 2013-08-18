@@ -73,22 +73,20 @@ function create_stack(target, data) {
     var is_first = (i == 0);
     var is_last = (i == (data.length - 1));
 
-    var stack_item = $('<li class="movie ' + (is_odd ? "odd" : "even") + (is_first ? ' first' : '') + (is_last ? ' last' : '') + ' clearfix" data-movieid="' + data[i]["Video ID"] + '"><a class="movie-entry mobile-grid-85 grid-parent" title="Watch ' + data[i].node_title + '">' + 
-        '<div class="boxart mobile-grid-25">' + data[i]["Video Image"] + '</div>' +
-        '<div class="movie-title mobile-grid-65">' + data[i].node_title + '</div></a>' + 
-        '<div class="shelf-toggle mobile-grid-15"><a title="Toggle the video details" href="#"><img alt="Toggle for opening the details" src="images/arrow-closed.png" /></a></div>' +
-        '<div class="shelf mobile-grid-100 grid-parent" style="display:none"><div class="content mobile-grid-100"><a class="mark-as-watched mobile-grid-50 grid-parent" title="Mark this video as watched" href="#">Mark as watched</a><a class="remove mobile-grid-50" title="Remove this video from the stack" href="#">Remove</a></div></div>' +
-        '</li>');
+    var stack_item = create_stack_item_html(data[i]["Video ID"], data[i].node_title, data[i]["Video Image"], is_odd, is_first, is_last);
 
     $('.mark-as-watched', stack_item).click(function(e) {
       var movie_id = $(this).parents('.movie').attr('data-movieid');
+      ga_track_click("Video", "Mark as watched", "Plugin", movie_id);
       flixstack_api.mark_as_watched(movie_id, function() {
         $('[data-movieid="' + movie_id + '"]').remove();
         notify_video_watched(movie_id);
       });
     });
+
     $('.remove', stack_item).click(function(e) {
       var movie_id = $(this).parents('.movie').attr('data-movieid');
+      ga_track_click("Video", "Remove", "Plugin", movie_id);
       flixstack_api.remove_from_stack(movie_id, function() {
         $('[data-movieid="' + movie_id + '"]').remove();
         notify_video_removed(movie_id);
@@ -96,14 +94,23 @@ function create_stack(target, data) {
     });
 
     $('.movie-entry', stack_item).attr('href', "http://movies.netflix.com/WiPlayer?movieid=" + data[i]["Video ID"]).attr('target', '_blank');
+    $('.movie-entry').click(function(e) {
+      var movie_id = $(this).parents('.movie').attr('data-movieid');
+      ga_track_click("Video", "Play", "Plugin", movie_id);
+    });
+
     $('.shelf-toggle', stack_item).click(function(e) {
       var shelf = $(this).siblings('.shelf');
       var will_be_opened = ($(shelf).css('display') == "none");
+      var movie_id = $(this).parents('.movie').attr('data-movieid');
+
       if (will_be_opened) {
         $('img', this).attr('src', "images/arrow-open.png");
+        ga_track_click("Video", "Toggle Shelf", "Open", movie_id);
       }
       else {
         $('img', this).attr('src', "images/arrow-closed.png");
+        ga_track_click("Video", "Toggle Shelf", "Close", movie_id);
       }
       $(shelf).slideToggle('fast');
       e.stopPropagation();
@@ -118,6 +125,34 @@ function create_stack(target, data) {
 }
 
 /**
+ * Creates just the HTML element for a stick item.
+ * Does not attach events.
+ *
+ */
+function create_stack_item_html(video_id, title, image_html, is_odd, is_first, is_last) {
+  var li_classes = 'movie clearfix';
+  li_classes += (is_odd ? ' odd' : ' even');
+  li_classes += (is_last ? ' last' : '')
+  var element = $('<li class="' + li_classes + '" data-movieid="' + video_id + '">' +
+        '<a class="movie-entry mobile-grid-85 grid-parent" title="Watch ' + title + '">' + 
+          '<div class="boxart mobile-grid-25">' + image_html + '</div>' +
+          '<div class="movie-title mobile-grid-65">' + title + '</div>' + 
+        '</a>' + 
+        '<div class="shelf-toggle mobile-grid-15">' + 
+          '<a title="Toggle the video details" href="#"><img alt="Toggle for opening the details" src="images/arrow-closed.png" /></a>' +
+        '</div>' + 
+        '<div class="shelf mobile-grid-100 grid-parent" style="display:none">' + 
+          '<div class="content mobile-grid-100">' +
+            '<a class="mark-as-watched mobile-grid-50 grid-parent" title="Mark this video as watched" href="#">Mark as watched</a>' + 
+            '<a class="remove mobile-grid-50" title="Remove this video from the stack" href="#">Remove</a>' +
+          '</div>' + 
+        '</div>' +
+      '</li>');
+
+  return element;
+}
+
+/**
  * Adds the "Find more movies" link to the bottom of the FlixStack list.
  *
  * @target
@@ -126,6 +161,9 @@ function create_stack(target, data) {
 function add_find_more_movies_link(target) {
   var stack_item = $("<div class=\"find-more-movies mobile-grid-100\"><a title=\"Find more movies to watch\" href=\"http://www.netflix.com\" target=\"_blank\">Find more movies</a></div>");
   $(target).after(stack_item);
+  $('a', stack_item).click(function(e) {
+    ga_track_click("Video", "Find more movies", "Plugin");
+  });
 }
 
 /**
@@ -298,8 +336,53 @@ function add_spinner(element, options) {
   }
 }
 
+/**
+ * Removes a spinner attached to a certain element.
+ *
+ * @param element
+ */
 function remove_spinner(element) {
   if (spinners[element]) {
     spinners[element].stop();
   }
+}
+
+/**
+ * Tracks a click on a link.
+ */
+function ga_track_click(category, action, label, value) {
+  if (typeof _gaq != "undefined") {
+    _gaq.push(['_trackEvent', category, action, label, value]);
+  }
+  
+  console.log(typeof _gaq != "undefined" ? "Tracking (" + category + "," + action + "," + label + "," + value + ")" : "Google Analytics is not setup.");
+}
+
+/**
+ * Sets up the default GA tracking on non-AJAX'd elements.
+ */
+function setup_default_ga_tracking() {
+  $('.login-links .register').click(function(e) {
+    ga_track_click("Account", "Register", "External");
+  });
+
+  $('.login-links .forgot-password').click(function(e) {
+    ga_track_click("Account", "Forgot password", "External");
+  });
+
+  $('#login-form').click(function(e) {
+    ga_track_click("Account", "Login Submit", "Onpage form");
+  });
+
+  $('.flixstack-settings .visit-flixstack').click(function(e) {
+    ga_track_click("Account", "Visit Flixstack", "External");
+  });
+
+  $('.flixstack-settings .leave-feedback').click(function(e) {
+    ga_track_click("Account", "Leave Feedback", "External");
+  });
+
+  $('.flixstack-settings .logout').click(function(e) {
+    ga_track_click("Account", "Logout", "Footer settings logout");
+  });
 }
