@@ -19,9 +19,11 @@ header {
 header .title {
   background: url(../images/header-logo.png) no-repeat;
   height: 60px;
-  padding-top: 10px;
+  padding-top: 14px;
   padding-left: 80px;
   margin: 0;
+  font-size: 28px;
+
 }
 
 .loading {
@@ -115,8 +117,16 @@ footer .login-links {
  * Registration / Login form
  */
 #login-form,
-#registration-form {
+#registration-form,
+#reset-password-form {
   padding-top: 10px;
+}
+
+/**
+ * Password-reset form
+ */
+#reset-password-submit {
+  font-size: 0.8em;
 }
 
 /**

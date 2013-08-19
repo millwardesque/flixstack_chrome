@@ -5,6 +5,7 @@ var user, // Currently logged in user information.
     Login: "login",
     Registration: "registration",
     Loading: "loading",
+    ForgotPassword: "forgot-password",
   },
   current_state = '';
 
@@ -99,13 +100,35 @@ $(document).ready(function() {
     return false;
   });
 
-  // Click on the "New User" / "Registration" link.
-  $('.login .register-link').click(function(e) {
-    change_state(StateEnum.Registration);
+  // Click the reset password button
+  $('#reset-password-submit').click(function(e) {
+    var email = $('.forgot-password #forgot-password-email').val();
+
+    change_state(StateEnum.Loading);
+
+    // @TODO Make service call to reset the password.
+    flixstack_api.empty_stub(function(data, textStatus) {
+      change_state(StateEnum.Login);
+      add_message("Check your email inbox for further details about resetting your password.", "info");
+    });
+
+    e.preventDefault();
+    e.stopPropagation();
+    return false;
   });
 
   // Click on the "New User" / "Registration" link.
-  $('.registration .existing-user').click(function(e) {
+  $('.register-link').click(function(e) {
+    change_state(StateEnum.Registration);
+  });
+
+    // Click on the Forgot Password link.
+  $('.forgot-password-link').click(function(e) {
+    change_state(StateEnum.ForgotPassword);
+  });
+
+  // Click on the "New User" / "Registration" link.
+  $('.existing-user-link').click(function(e) {
     change_state(StateEnum.Login);
   });
 }); // End document.ready()
@@ -357,12 +380,18 @@ function change_state(new_state) {
       $('header h1').html("Registration");
       break;
 
+    case StateEnum.ForgotPassword:
+      $('.panel-container').hide();
+      $('.loading').hide();
+      $('.forgot-password').show();
+      $('header h1').html("Password reset");
+      break;
+
     default:
       break;
   }
 
   clear_messages();
-  console.log("Changed state from: " + current_state + " to " + new_state);
   current_state = new_state;
 }
 
@@ -425,7 +454,7 @@ function setup_default_ga_tracking() {
     ga_track_click("Account", "Register", "External");
   });
 
-  $('.login-links .forgot-password').click(function(e) {
+  $('.login-links .forgot-password-link').click(function(e) {
     ga_track_click("Account", "Forgot password", "External");
   });
 

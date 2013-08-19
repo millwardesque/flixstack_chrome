@@ -37,7 +37,7 @@
 
           <footer>
             <div class="mobile-grid-55 login-links">
-              Existing User? <a class="existing-user" title="Sign in as an existing user" href="#">Sign in</a>.
+              Existing User? <a class="existing-user-link" title="Sign in as an existing user" href="#">Sign in</a>.
             </div>
             <div class="mobile-grid-45 form-item submit">
               <input type="submit" id="registration-submit" value="Register" />
@@ -45,6 +45,7 @@
           </footer>
         </form>
       </div>
+      <!-- End Registration screen -->
 
       <!-- Login screen -->
       <div class="login panel-container clearfix" style="display:none;">
@@ -62,7 +63,7 @@
           <footer>
             <div class="mobile-grid-55 login-links">
               New? <a class="register-link" href="#" title="Create a FlixStack account">Create an account!</a><br />
-              Forgot your <a class="forgot-password" title="Reset your password" href="http://www.flixstack.com/user/password" target="_blank">password</a>?
+              Forgot your <a class="forgot-password-link" title="Reset your password" href="#">password</a>?
             </div>
             <div class="mobile-grid-45 form-item submit">
               <input type="submit" id="login-submit" value="Log in" />
@@ -70,6 +71,27 @@
           </footer>
         </form>
       </div>
+      <!-- End Login screen -->
+
+      <!-- Forgot password screen -->
+      <div class="forgot-password panel-container clearfix" style="display:none;">
+        <form method="post" action="#" id="reset-password-form">
+          <div class="form-item email-wrapper mobile-grid-100">
+            <label class="mobile-grid-35 grid-parent" for="email">Email</label>
+            <input class="mobile-grid-65" type="text" id="forgot-password-email">
+          </div>
+          <footer>
+            <div class="mobile-grid-55 login-links">
+              New? <a class="register-link" href="#" title="Create a FlixStack account">Create an account!</a><br />
+              Existing User? <a class="existing-user-link" title="Sign in as an existing user" href="#">Sign in</a>.
+            </div>
+            <div class="mobile-grid-45 form-item submit">
+              <input type="submit" id="reset-password-submit" value="Reset Password" />
+            </div>
+          </footer>
+        </form>
+      </div>
+      <!-- End Forgot password screen -->
 
       <!-- To-watch screen -->
       <div class="logged-in panel-container clearfix" style="display:none;">
@@ -86,6 +108,8 @@
           </div>
         </div>
       </div>
+      <!-- End To-watch screen -->
+
     </div>
   </body>
 </html>

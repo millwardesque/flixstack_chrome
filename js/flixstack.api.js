@@ -31,6 +31,13 @@ var flixstack_api = {
   },
 
   /**
+   * Stub function for faking service calls.
+   */
+  empty_stub: function (callback) {
+    callback({}, "success");
+  },
+
+  /**
    * Establishes a connection to the webservice.
    *
    * @param callback
