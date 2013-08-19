@@ -22,8 +22,32 @@
       <ul class="messages mobile-grid-100"></ul>
       <h2 class="loading mobile-grid-100">Loading...</h2>
 
+      <!-- Registration screen -->
+      <div class="registration panel-container clearfix" style="display:none;">
+        <form method="post" action="#" id="registration-form">
+          <div class="form-item username-wrapper mobile-grid-100">
+            <label class="mobile-grid-35 grid-parent" for="username">Email</label>
+            <input class="mobile-grid-65" type="text" id="registration-username">
+          </div>
+
+          <div class="form-item password-wrapper mobile-grid-100">
+            <label class="mobile-grid-35 grid-parent" for="password">Password</label>
+            <input class="mobile-grid-65" type="password" id="registration-password">
+          </div>
+
+          <footer>
+            <div class="mobile-grid-55 login-links">
+              Existing User? <a class="existing-user" title="Sign in as an existing user" href="#">Sign in</a>.
+            </div>
+            <div class="mobile-grid-45 form-item submit">
+              <input type="submit" id="registration-submit" value="Register" />
+            </div>
+          </footer>
+        </form>
+      </div>
+
       <!-- Login screen -->
-      <div class="login panel-container clearfix">
+      <div class="login panel-container clearfix" style="display:none;">
         <form method="post" action="#" id="login-form">
           <div class="form-item username-wrapper mobile-grid-100">
             <label class="mobile-grid-35 grid-parent" for="username">Email</label>
@@ -37,7 +61,7 @@
 
           <footer>
             <div class="mobile-grid-55 login-links">
-              New? <a class="register" href="http://www.flixstack.com/user/register" title="Create a FlixStack account" target="_blank">Create an account!</a><br />
+              New? <a class="register-link" href="#" title="Create a FlixStack account">Create an account!</a><br />
               Forgot your <a class="forgot-password" title="Reset your password" href="http://www.flixstack.com/user/password" target="_blank">password</a>?
             </div>
             <div class="mobile-grid-45 form-item submit">
@@ -48,7 +72,7 @@
       </div>
 
       <!-- To-watch screen -->
-      <div class="logged-in panel-container clearfix">
+      <div class="logged-in panel-container clearfix" style="display:none;">
         <div class="flixstack-list">
           <ol></ol>
         </div>

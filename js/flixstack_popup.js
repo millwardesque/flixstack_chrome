@@ -1,35 +1,43 @@
 var user, // Currently logged in user information.
-  spinners = {};  // A hash of all active spinners.
+  spinners = {},  // A hash of all active spinners.
+  StateEnum = {
+    FlixToWatch: "flix-to-watch",
+    Login: "login",
+    Registration: "registration",
+    Loading: "loading",
+  },
+  current_state = '';
 
 $(document).ready(function() {
   // Initial page setup.
-  show_loading();
+  change_state(StateEnum.Loading);
 
   flixstack_api.connect(function(data, textStatus) {
     user = data;
-    update_status();
 
     if (is_signed_in()) {
+      change_state(StateEnum.FlixToWatch);
       notify_create_links();
 
       flixstack_api.load_stack(function(data, textStatus) {
         create_stack('.logged-in ol', data);
       });
     }
+    else {
+      change_state(StateEnum.Login);
+    }
   });
 
   // Click on the logout button.
   $('.logout').click(function() {
-    show_loading();
-    console.log("Showing loading...");
+    change_state(StateEnum.Loading);
 
     flixstack_api.logout(function(data, textStatus) {
       user = undefined;
       notify_remove_links();
-      update_status();
+      change_state(StateEnum.Login);
       add_message("You have successfully logged out.<br />Come back soon!", "info");
     });
-    update_status();
   });
 
   // Click on the login button.
@@ -38,10 +46,10 @@ $(document).ready(function() {
     var password = $('.login #password').val();
     $('.login #password').val('');
 
-    show_loading();
+    change_state(StateEnum.Loading);
     flixstack_api.login(username, password, function(data, textStatus) {
       user = data;
-      update_status();
+      change_state(StateEnum.FlixToWatch);
       notify_create_links();
       flixstack_api.load_stack(function(data, textStatus) {
         $('.logged-in .flixstack-list').html('<ol></ol>');
@@ -49,13 +57,56 @@ $(document).ready(function() {
       });
     },
     function() {
-      update_status();
+      change_state(StateEnum.Login);
       add_message('Login failed, please try again.', "error");
     });
 
     e.preventDefault();
     e.stopPropagation();
     return false;
+  });
+
+  // Click on the register button.
+  $('.registration #registration-submit').click(function(e) {
+    var email = $('.registration #registration-username').val();
+    var password = $('.registration #registration-password').val();
+    $('.registration #registration-password').val('');
+
+    change_state(StateEnum.Loading);
+    flixstack_api.register(email, email, password, function(data, textStatus) {
+      flixstack_api.login(email, password, function(data, textStatus) {
+        user = data;
+        change_state(StateEnum.FlixToWatch);
+        add_message("Registration complete. Welcome to FlixStack!");
+        notify_create_links();
+        flixstack_api.load_stack(function(data, textStatus) {
+          $('.logged-in .flixstack-list').html('<ol></ol>');
+          create_stack('.logged-in ol', data);
+        });
+      },
+      function() {
+        change_state(StateEnum.Login);
+        add_message('Login failed, please try again.', "error");
+      });
+    },
+    function() {
+      change_state(StateEnum.Register);
+      add_message('Registration failed, please try again.', "error");
+    });
+
+    e.preventDefault();
+    e.stopPropagation();
+    return false;
+  });
+
+  // Click on the "New User" / "Registration" link.
+  $('.login .register-link').click(function(e) {
+    change_state(StateEnum.Registration);
+  });
+
+  // Click on the "New User" / "Registration" link.
+  $('.registration .existing-user').click(function(e) {
+    change_state(StateEnum.Login);
   });
 }); // End document.ready()
 
@@ -266,43 +317,53 @@ function clear_messages() {
 }
 
 /**
- * Replaces the active pane with a loading pane.
- */
-function show_loading() {
-  $('.loading').show();
-  $('.logged-in').hide();
-  $('.login').hide();
-  $('.logout').hide();
-
-  $('.loading').each(function(index, element) {
-    add_spinner(element, {left: "210px"});
-  });
-   
-  clear_messages();
-}
-
-/**
  * Updates the state of the window panes.
  */
-function update_status() {
+function change_state(new_state) {
+  if (current_state == new_state) {
+    console.log("Unable to change state: Already in state " + new_state);
+    return;
+  }
+
+  // Set the new state.
+  switch(new_state) {
+    case StateEnum.Loading:
+      $('.panel-container').hide();
+      $('.loading').show();
+      
+      $('.loading').each(function(index, element) {
+        add_spinner(element, {left: "210px"});
+      });
+      break;
+
+    case StateEnum.FlixToWatch:
+      $('.panel-container').hide();
+      $('.loading').hide();
+      $('.logged-in').show();
+      $('header h1').html("Flix to watch");
+      break;
+
+    case StateEnum.Login:
+      $('.panel-container').hide();
+      $('.loading').hide();
+      $('.login').show();
+      $('header h1').html("Login");
+      break;
+
+    case StateEnum.Registration:
+      $('.panel-container').hide();
+      $('.loading').hide();
+      $('.registration').show();
+      $('header h1').html("Registration");
+      break;
+
+    default:
+      break;
+  }
+
   clear_messages();
-
-  if (is_signed_in()) {
-    $('.loading').hide();
-    $('.login').hide();
-    $('.logged-in').show();
-    $('.logout').show();
-
-    $('header h1').html("Flix to watch");
-  }
-  else {
-    $('.loading').hide();
-    $('.login').show();
-    $('.logged-in').hide();
-    $('.logout').hide();
-
-    $('header h1').html("Login");
-  }
+  console.log("Changed state from: " + current_state + " to " + new_state);
+  current_state = new_state;
 }
 
 /**

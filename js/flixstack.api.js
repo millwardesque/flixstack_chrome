@@ -85,6 +85,31 @@ var flixstack_api = {
   },
 
   /**
+   * Registers a new user.
+   *
+   * @param username
+   *  The username.
+   * @param password
+   *  The password.
+   * @callback_success
+   *  The callback to run if the call succeeds.
+   * @param callback_404
+   *  The callback to run if the call returns a 401.
+   */
+  register: function (username, email, password, callback_success, callback_401) {
+    var url = flixstack_api.flixstack_domain + '/service/netflix/user/register.json';
+    var post_data = {
+      'name': username,
+      'mail': email,
+      'pass': password
+    };
+
+    flixstack_api.get_csrf_token(function() {
+      $.post(url, post_data, callback_success, 'json').fail(callback_401);
+    });
+  },
+
+  /**
    * Loads the user's stack.
    *
    * @param callback

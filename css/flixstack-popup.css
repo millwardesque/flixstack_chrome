@@ -112,9 +112,10 @@ footer .login-links {
 }
 
 /**
- * Login form
+ * Registration / Login form
  */
-#login-form {
+#login-form,
+#registration-form {
   padding-top: 10px;
 }
 
