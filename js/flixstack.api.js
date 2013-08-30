@@ -96,6 +96,8 @@ var flixstack_api = {
    *
    * @param username
    *  The username.
+   * @param email
+   *   The email address.
    * @param password
    *  The password.
    * @callback_success
@@ -113,6 +115,25 @@ var flixstack_api = {
 
     flixstack_api.get_csrf_token(function() {
       $.post(url, post_data, callback_success, 'json').fail(callback_401);
+    });
+  },
+
+  /**
+   * Resets the user's password.
+   *
+   * @param email
+   *   The email address.
+   * @callback
+   *  The callback to run when the call has finished.
+   */
+  password_reset: function (email, callback) {
+    var url = flixstack_api.flixstack_domain + '/service/netflix/user/' + urlencode(email) + '/password_reset.json';
+    var post_data = {
+      'uid': email,
+    };
+
+    flixstack_api.get_csrf_token(function() {
+      $.post(url, post_data, callback, 'json');
     });
   },
 

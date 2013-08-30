@@ -106,8 +106,7 @@ $(document).ready(function() {
 
     change_state(StateEnum.Loading);
 
-    // @TODO Make service call to reset the password.
-    flixstack_api.empty_stub(function(data, textStatus) {
+    flixstack_api.password_reset(email, function(data, textStatus) {
       change_state(StateEnum.Login);
       add_message("Check your email inbox for further details about resetting your password.", "info");
     });
